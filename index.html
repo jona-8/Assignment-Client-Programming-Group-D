@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Earthquake & Natural Hazard Monitor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-body-tertiary">
+    <!-- ===== Jona Berbatovci STARTS ===== -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-semibold" href="#">Earthquake &amp; Hazard Monitor</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-2"><a class="nav-link" href="#hero">Introduction</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#filtersCard">Filters</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#eventsSection">Events</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#chartSection">Magnitude Distribution</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#mapSection">Map</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#footer">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- ===== Jona Berbatovci ENDS ===== -->
+
+    <main class="container py-4" id="dashboard">
+
+        <!-- ===== Jona Gecaj STARTS ===== -->
+        <div id="hero" class="row align-items-center g-4 mb-5 border-bottom border-2 pb-5 pt-3 mt-5">
+            <div class="col-12 col-lg-6">
+                <h3 class="display-5 fw-bold mb-3">Earthquake & Natural Hazard Monitor</h3>
+                <p class="lead text-muted">
+                    This platform provides real-time monitoring of global earthquakes and natural hazards,
+                    using live data from USGS and NASA EONET. Explore event locations, severity, magnitude
+                    patterns, and interactive mapping — all in one powerful dashboard.
+                </p>
+                <p class="text-muted small mb-3">
+                    Use the tabs in the Filters section to switch between USGS Earthquake data
+                    and NASA Natural Hazard events. Each data source has its own filters and view.
+                </p>
+                <a href="#filtersCard" class="btn btn-primary btn-lg px-4">Start Exploring</a>
+            </div>
+            <div class="col-12 col-lg-6 d-flex justify-content-center">
+                <img src="image.png" class="img-fluid" alt="Earthquake illustration"
+                    style="max-height: 300px; object-fit: contain;">
+            </div>
+        </div>
+        <!-- ===== Jona Gecaj ENDS ===== -->
+
+
+
+
+        <!-- ===== Jona Berbatovci STARTS ===== -->
+        <div class="row g-3 mb-3" id="filtersCard">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div id="filters" class="card-header fw-semibold bg-dark text-light"><i
+                            class="bi bi-funnel me-2"></i>Filters</div>
+                    <div class="card-body">
+                        <!-- ===== Jona Berbatovci ENDS ===== -->
+
+
+                        <!-- ===== Anid Vokshi STARTS ===== -->
+                        <ul class="nav nav-tabs mb-3" id="sourceTabs" role="tablist">
+                            <li class="nav-item me-2" role="presentation">
+                                <button class="nav-link active" type="button" data-source="usgs">
+                                    Earthquakes (USGS)
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" type="button" data-source="eonet">
+                                    Natural Hazards (NASA EONET)
+                                </button>
+                            </li>
+                        </ul>
+                        <!-- ===== Anid Vokshi ENDS ===== -->
+
+
+
+                        <!-- ===== Jona Berbatovci STARTS ===== -->
+                        <div class="row g-3 align-items-end" id="earthquakeFiltersRow">
+                            <div class="col-12 col-md-3">
+                                <label for="timeRangeSelect" class="form-label">Time range</label>
+                                <select class="form-select" id="timeRangeSelect">
+                                    <option value="hour">Past hour</option>
+                                    <option value="day" selected>Past 24 hours</option>
+                                    <option value="week">Past 7 days</option>
+                                    <option value="month">Past 30 days</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <label for="magnitudeSelect" class="form-label">Magnitude filter</label>
+                                <select class="form-select" id="magnitudeSelect">
+                                    <option value="all" selected>All magnitudes</option>
+                                    <option value="1.0">1.0+ (Minor+)</option>
+                                    <option value="2.5">2.5+ (Light+)</option>
+                                    <option value="4.5">4.5+ (Moderate+)</option>
+                                </select>
+                            </div>
+                            <!-- ===== Jona Berbatovci ENDS ===== -->
+
+
+                            <!-- ===== Dea Tahiraj STARTS ===== -->
+                            <div class="col-12 col-md-3">
+                                <label for="regionSelect" class="form-label">Region</label>
+                                <select class="form-select" id="regionSelect">
+                                    <option value="global" selected>Global</option>
+                                    <option value="na">North America</option>
+                                    <option value="sa">South America</option>
+                                    <option value="eu">Europe</option>
+                                    <option value="af">Africa</option>
+                                    <option value="as">Asia</option>
+                                    <option value="oc">Oceania</option>
+                                </select>
+                            </div>
+                            <!-- ===== Dea Tahiraj ENDS ===== -->
+
+
+                            <!-- ===== Jona Berbatovci STARTS ===== -->
+                            <div class="col-12 col-md-3 d-grid">
+                                <button id="applyEarthquakeBtn" class="btn btn-primary w-100">
+                                    Load earthquakes
+                                </button>
+                            </div>
+                        </div>
+                        <!-- ===== Jona Berbatovci ENDS ===== -->
+
+
+                        <!-- ===== Anid Vokshi STARTS ===== -->
+                        <div class="row g-3 align-items-end d-none" id="nasaFiltersRow">
+                            <div class="col-12 col-md-4">
+                                <label for="nasaCategorySelect" class="form-label">Hazard category</label>
+                                <select class="form-select" id="nasaCategorySelect">
+                                    <option value="all" selected>All categories</option>
+                                    <option value="wildfires">Wildfires</option>
+                                    <option value="volcanoes">Volcanoes</option>
+                                    <option value="storms">Storms / Cyclones</option>
+                                    <option value="floods">Floods</option>
+                                    <option value="ice">Sea / Lake Ice</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-3 d-grid">
+                                <button id="applyNasaBtn" class="btn btn-primary w-100">
+                                    Load hazards
+                                </button>
+                            </div>
+                            <div class="col-12 col-md-5">
+                                <p class="small text-muted mb-0">
+                                    NASA EONET shows active natural hazard events such as wildfires,
+                                    volcanic activity, storms, and floods around the world.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="small text-muted mt-2" id="currentFeedInfo"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- ===== Anid Vokshi ENDS ===== -->
+
+
+            <!-- ===== Jona Berbatovci STARTS ===== -->
+            <div class="col-12">
+                <div class="row g-3 align-items-stretch">
+                    <div class="col">
+                        <div class="card shadow-sm h-100 d-flex">
+                            <div class="card-body">
+                                <div class="text-muted text-uppercase small mb-1">Total events</div>
+                                <div class="h3 mb-0"><span id="totalCount">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col strongest-magnitude-card">
+                        <div class="card shadow-sm h-100 d-flex">
+                            <div class="card-body">
+                                <div class="text-muted text-uppercase small mb-1 ">Strongest magnitude</div>
+                                <div class="h3 mb-0"><span id="maxMagnitude">N/A</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card shadow-sm h-100 d-flex">
+                            <div class="card-body">
+                                <div class="text-muted text-uppercase small mb-1">Last updated</div>
+                                <div class="h6 mb-0" id="lastUpdated">–</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="mb-3" id="errorContainer"></div>
+        </div>
+        <!-- ===== Jona Berbatovci ENDS ===== -->
+
+
+        <!-- ===== Jona Gecaj STARTS ===== -->
+        <section id="severitySection" class="mb-4 d-none">
+            <h2 class="h5 mb-3">Earthquake events by severity</h2>
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center bg-severity-low">
+                            <div class="text-uppercase small mb-1">Low (&lt; 3)</div>
+                            <div class="h4 mb-0" id="severityLowCount">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center bg-severity-moderate">
+                            <div class="text-uppercase small mb-1">Moderate (3–4.5)</div>
+                            <div class="h4 mb-0" id="severityModerateCount">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center bg-severity-high">
+                            <div class="text-uppercase small mb-1">High (4.5–6)</div>
+                            <div class="h4 mb-0" id="severityHighCount">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center bg-severity-extreme">
+                            <div class="text-uppercase small mb-1">Extreme (6+)</div>
+                            <div class="h4 mb-0" id="severityExtremeCount">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-muted small mt-2">
+                Severity levels are based on earthquake magnitude and help quickly assess how many weaker
+                or stronger events occurred in the selected feed and region.
+            </p>
+        </section>
+
+        <section id="featuredSection" class="mb-5 d-none">
+            <h2 class="h4 mb-3">High-Magnitude Events (M5+)</h2>
+            <div class="row g-3" id="featuredCards"></div>
+            <div class="row g-3">
+                <div class="col-12 pt-3">
+                    <p class="text-muted small">
+                        Earthquakes with a magnitude of 5.0 or above are considered significant. These
+                        events are highlighted for quick access because they have a higher potential
+                        for damage and global impact.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- ===== Jona Gecaj ENDS ===== -->
+
+
+        <!-- ===== Lea Deshishku STARTS ===== -->
+        <div id="eventsSection" class="row g-3 mb-3">
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-sm h-100">
+                    <div
+                        class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2 bg-dark text-light">
+                        <div class="fw-semibold" id="eventsSectionTitle">Earthquake Events</div>
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <div class="input-group input-group-sm" style="width: 230px;">
+                                <label class="input-group-text" for="sortBySelect">Sort</label>
+                                <select id="sortBySelect" class="form-select">
+                                    <option value="time" id="sortTime">Time</option>
+                                    <option value="mag" id="sortMag">Magnitude</option>
+                                    <option value="depth" id="sortDepth">Depth</option>
+                                </select>
+                                <button class="btn btn-outline-secondary" id="sortOrderBtn" type="button"
+                                    aria-label="Toggle sort order">↓</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive" style="max-height: 420px;">
+                        <table class="table table-hover align-middle m-0 p-0">
+                            <thead class="table-light position-sticky top-0" style="background:white; z-index: 50;">
+                                <tr>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Mag</th>
+                                    <th scope="col">Location / Title</th>
+                                    <th scope="col">Depth (km)</th>
+                                    <th scope="col">Coordinates</th>
+                                    <th scope="col">Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">No data loaded yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div id="loadingSpinner" class="text-center py-4 d-none">
+                            <div class="spinner-border text-primary" role="status"></div>
+                            <div class="mt-2 small text-muted">Loading data…</div>
+                        </div>
+                    </div>
+                    <div class="card-footer small text-muted">
+                        Click a row to see details in the Event Details accordion.
+                    </div>
+                </div>
+            </div>
+            <!-- ===== Lea Deshishku ENDS ===== -->
+
+
+            <!-- ===== Dea Tahiraj STARTS ===== -->
+            <div class="col-12 col-lg-4 d-flex">
+                <div class="accordion w-100" id="eventDetailsAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button id="eventDetailsBtn" class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#detailsCollapse">
+                                Event Details
+                            </button>
+                        </h2>
+                        <div id="detailsCollapse" class="accordion-collapse collapse">
+                            <div class="accordion-body small">
+                                <p class="mb-1"><strong>Magnitude:</strong> <span id="detailsMag">–</span></p>
+                                <p class="mb-1"><strong>Severity:</strong> <span id="detailsSeverity">–</span></p>
+                                <p class="mb-1"><strong>Location / Title:</strong> <span id="detailsLocation">–</span>
+                                </p>
+                                <p class="mb-1"><strong>Depth:</strong> <span id="detailsDepth">–</span></p>
+                                <p class="mb-1"><strong>Time:</strong> <span id="detailsTime">–</span></p>
+                                <p class="mb-1"><strong>Coordinates:</strong> <span id="detailsCoords">–</span></p>
+                                <p class="mb-0"><strong>Link:</strong>
+                                    <a id="detailsLink" href="#" target="_blank" rel="noopener">–</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===== Dea Tahiraj ENDS ===== -->
+
+
+        <!-- ===== Lea Deshishku STARTS ===== -->
+        <div class="row g-3 mb-3">
+            <div class="col-12">
+                <p class="text-muted small pt-2">
+                    The table shows events from the currently selected data source (USGS or NASA EONET).
+                    You can sort by time, magnitude, or depth (where available). Click any row to view
+                    detailed information in the Event Details accordion.
+                </p>
+            </div>
+        </div>
+        <hr class="border-dark mt-5">
+        <!-- ===== Lea Deshishku ENDS ===== -->
+
+
+        <!-- ===== Jona Gecaj STARTS ===== -->
+        <div id="chartSection" class="row g-3 mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header fw-semibold bg-dark text-light"><i
+                            class="bi bi-bar-chart me-2"></i>Magnitude distribution</div>
+                    <div class="card-body" style="height: 350px;">
+                        <canvas id="magnitudeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <p class="text-muted small ">
+                    The magnitude distribution chart groups earthquakes by intensity level, following
+                    common USGS categories. This helps visualize how many low, moderate, and strong events
+                    occurred within the selected time range and region.
+                </p>
+            </div>
+        </div>
+        <hr class="border-dark mt-5">
+
+        <div id="mapSection" class="row g-3 mb-4 mt-3">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header fw-semibold bg-dark text-light"> <i class="bi bi-map me-2"></i>Map</div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height: 420px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <p class="text-muted small">
+                    The interactive map displays event locations using colored markers. For earthquakes,
+                    marker size and color are based on magnitude. For NASA hazards, markers represent
+                    reported natural events. You can zoom, pan, and click markers to see details such as
+                    magnitude or event title, location, and time.
+                </p>
+            </div>
+        </div>
+        <!-- ===== Jona Gecaj ENDS ===== -->
+
+
+    </main>
+
+
+    <!-- ===== Anid Vokshi STARTS ===== -->
+    <footer id="footer" class="bg-dark text-light py-4 mt-5 border-top border-secondary">
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-12 col-md-8">
+
+                    <h5 class="fw-semibold"><i class="bi bi-info-circle-fill me-2 text-primary"></i>
+                        About this project
+                    </h5>
+                    <p class="small mb-1">
+                        This application retrieves real-time and recent earthquake and natural hazard data from
+                        the USGS Earthquake Hazards Program and NASA EONET feeds.
+                    </p>
+                    <p class="small mb-0">
+                        Users can filter events, view sortable tables, explore high-magnitude incidents,
+                        see interactive map markers, and analyze magnitude distribution charts for earthquakes.
+                    </p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <h5 class="fw-semibold"><i class="bi bi-people-fill me-2 text-success"></i>
+                        Group Information</h5>
+                    <p class="small mb-1"><strong>Course:</strong> Client Programming</p>
+                    <p class="small mb-1"><strong>Instructor:</strong> Ermir Rogova</p>
+                    <p class="small mb-1"><strong>Group:</strong> D</p>
+                    <p class="small mb-0">
+                        <strong>Members:</strong> Anid Vokshi, Dea Tahiraj, Jona Berbatovci,
+                        Jona Gecaj, Lea Deshishku
+                    </p>
+                </div>
+            </div>
+            <hr class="border-secondary my-3">
+
+            <div class="small d-flex justify-content-between flex-wrap text-light">
+                <span>Earthquake & Natural Hazard Monitor © 2025</span>
+                <span>Built with USGS, NASA EONET, and Leaflet</span>
+            </div>
+        </div>
+    </footer>
+    <!-- ===== Anid Vokshi  ENDS ===== -->
+
+
+    <!-- ===== Jona Berbatovci STARTS ===== -->
+    <div class="modal fade" id="dataLoadedModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-light">
+                    <h5 class="modal-title">For Your Information</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Your action has been successfully executed.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ===== Jona Berbatovci ENDS ===== -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

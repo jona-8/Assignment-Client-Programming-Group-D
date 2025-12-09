@@ -1,0 +1,106 @@
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 60px;
+}
+
+
+/* ===== Jona Berbatovci STARTS ===== */
+.card-header {
+    background: linear-gradient(90deg, #0d6efd10, #0d6efd05);
+    margin-bottom: 0 !important;
+    padding-bottom: 8px !important;
+}
+
+.summary-row .col-12:not(.d-none) {
+    flex: 1 0 0;
+}
+
+/* ===== Jona Berbatovci ENDS ===== */
+
+
+
+/* ===== Lea Deshishku STARTS ===== */
+.badge-mag {
+    font-weight: 600;
+}
+
+.table-responsive thead,
+.table-responsive thead th {
+    background: #f8f9fa !important;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.table thead th {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    vertical-align: middle !important;
+    font-size: 0.9rem;
+}
+
+.card-body.table-responsive {
+    padding-top: 0 !important;
+}
+
+#eventsTableBody tr.active-row,
+#eventsTableBody tr.active-row td {
+    background-color: #cfe2ff !important;
+    color: #000 !important;
+}
+/* ===== Lea Deshishku ENDS ===== */
+
+
+/* ===== Jona Gecaj STARTS ===== */
+.bg-severity-low {
+    background-color: #198754 !important;
+    color: #fff !important;
+}
+
+.bg-severity-moderate {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.bg-severity-high {
+    background-color: #fd7e14 !important;
+    color: #fff !important;
+}
+
+.bg-severity-extreme {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+.leaflet-control.legend {
+    background: white;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.3;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.legend-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.legend-color {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    border-radius: 50%;
+}
+/* ===== Jona Gecaj ENDS ===== */
